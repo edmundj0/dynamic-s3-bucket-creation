@@ -8,10 +8,10 @@ def is_bucket_name_available(bucket_name):
     except (s3.exceptions.NoSuchBucket, s3.exceptions.ClientError) as e:
         return True # Bucket exists, so name available
 
-def run_terraform_apply():
+def run_terraform_apply(bucket_name):
     try:
-        subprocess.run("terraform apply", shell=True, check=True)
-        print('done')
+        subprocess.run(f"TF_VAR_bucket_name={bucket_name} terraform apply", shell=True, check=True)
+        print('Completed')
     except subprocess.CalledProcessError as e:
         print('Error running "terraform apply": ', e)
 
@@ -23,7 +23,7 @@ def main():
         print(f"The bucket name '{bucket_name}' is available.")
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.submit(run_terraform_apply)
+            executor.submit(run_terraform_apply(bucket_name))
 
 
     else:

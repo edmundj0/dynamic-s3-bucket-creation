@@ -6,7 +6,6 @@ def is_bucket_name_available(bucket_name):
         response = s3.head_bucket(Bucket=bucket_name)
         return False  # Bucket exists in your account, so name not available
     except s3.exceptions.ClientError as e:
-        print(e.response['Error']['Code'])
         if e.response['Error']['Code'] == '403':
             return False #bucket owned by someone else, so name not available
         return True # Bucket doesn't exist, so name available

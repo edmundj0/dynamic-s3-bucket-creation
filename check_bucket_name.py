@@ -6,7 +6,7 @@ def is_bucket_name_available(bucket_name):
         response = s3.head_bucket(Bucket=bucket_name)
         return False  # Bucket exists, so name not available
     except (s3.exceptions.NoSuchBucket, s3.exceptions.ClientError) as e:
-        return True # Bucket exists, so name available
+        return True # Bucket doesn't exist, so name available
 
 def run_terraform_apply(bucket_name):
     try:
